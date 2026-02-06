@@ -1,0 +1,49 @@
+{
+  "nodes": [
+    {
+      "id": "input_node",
+      "type": "Input",
+      "label": "User Input",
+      "nodeCategory": "input",
+      "position": {
+        "x": 100,
+        "y": 200
+      }
+    },
+    {
+      "id": "ngo_discovery_agent",
+      "type": "Agent",
+      "label": "NGO Discovery Agent",
+      "nodeCategory": "agent",
+      "position": {
+        "x": 400,
+        "y": 200
+      },
+      "data": {
+        "agent_id": "69859700e5d25ce3f598cbc8",
+        "agent_name": "NGO Discovery Agent",
+        "description": "Conducts personalized onboarding by asking users about healthcare causes they care about (maternal health, mental health, cancer care, rural healthcare, child health, etc.), processes their preferences, and recommends matched verified NGOs with brief explanations of why each NGO aligns with their interests"
+      }
+    },
+    {
+      "id": "output_node",
+      "type": "Output",
+      "label": "Output",
+      "nodeCategory": "end",
+      "position": {
+        "x": 700,
+        "y": 200
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "input_node",
+      "target": "ngo_discovery_agent"
+    },
+    {
+      "source": "ngo_discovery_agent",
+      "target": "output_node"
+    }
+  ]
+}

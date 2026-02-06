@@ -1,0 +1,38 @@
+{
+  "agent_name": "NGO Discovery Agent",
+  "agent_id": "69859700e5d25ce3f598cbc8",
+  "test_message": "I'm interested in child health",
+  "expected_purpose": "Conducts personalized onboarding by asking users about healthcare causes they care about and recommends matched NGOs",
+  "timestamp": "2026-02-06T07:24:51.866628",
+  "is_valid_json": true,
+  "validation_errors": [],
+  "actual_response": {
+    "status": "success",
+    "result": {
+      "message": "Thank you for sharing your interest in child health. Let's help you find NGOs that focus on this important cause.",
+      "recommended_ngos": [
+        {
+          "ngo_name": "Save the Children India",
+          "cause_area": "Child Health",
+          "match_reason": "Save the Children India works extensively on promoting child health through nutrition and healthcare programs across India."
+        },
+        {
+          "ngo_name": "CRY - Child Rights and You",
+          "cause_area": "Child Health",
+          "match_reason": "CRY focuses on ensuring access to healthcare for children and works towards reducing malnutrition and improving immunization in underserved communities."
+        },
+        {
+          "ngo_name": "Child Health Foundation",
+          "cause_area": "Child Health",
+          "match_reason": "This foundation dedicates its efforts to support projects that improve the health and welfare of children, particularly in rural areas."
+        }
+      ],
+      "conversation_stage": "providing_recommendations"
+    },
+    "metadata": {
+      "agent_name": "NGO Discovery Agent",
+      "timestamp": "2023-11-30T01:02:08Z"
+    }
+  },
+  "raw_response": "{\n  \"status\": \"success\",\n  \"result\": {\n    \"message\": \"Thank you for sharing your interest in child health. Let's help you find NGOs that focus on this important cause.\",\n    \"recommended_ngos\": [\n      {\n        \"ngo_name\": \"Save the Children India\",\n        \"cause_area\": \"Child Health\",\n        \"match_reason\": \"Save the Children India works extensively on promoting child health through nutrition and healthcare programs across India.\"\n      },\n      {\n        \"ngo_name\": \"CRY - Child Rights and You\",\n        \"cause_area\": \"Child Health\",\n        \"match_reason\": \"CRY focuses on ensuring access to healthcare for children and works towards reducing malnutrition and improving immunization in underserved communities.\"\n      },\n      {\n        \"ngo_name\": \"Child Health Foundation\",\n        \"cause_area\": \"Child Health\",\n        \"match_reason\": \"This foundation dedicates its efforts to support projects that improve the health and welfare of children, particularly in rural areas.\"\n      }\n    ],\n    \"conversation_stage\": \"providing_recommendations\"\n  },\n  \"metadata\": {\n    \"agent_name\": \"NGO Discovery Agent\",\n    \"timestamp\": \"2023-11-30T01:02:08Z\"\n  }\n}"
+}
