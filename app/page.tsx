@@ -5,7 +5,7 @@ import { callAIAgent } from '@/lib/aiAgent'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { Loader2, X, Heart, Users, MapPin, Calendar, CheckCircle, Share2, ChevronLeft, ChevronRight, Home as HomeIcon, Search, Bookmark, User, Send, TrendingUp, Award, Activity } from 'lucide-react'
+import { Loader2, X, Heart, Users, MapPin, Calendar, CheckCircle, Share2, ChevronLeft, ChevronRight, Home as HomeIcon, Search, Bookmark, User, Send, TrendingUp, Award, Activity, Mail, Bell, Filter, ArrowUpDown, Copy, Facebook, Twitter, Linkedin, CheckSquare, Square, Globe } from 'lucide-react'
 
 // TypeScript interfaces from actual agent response
 interface RecommendedNGO {
@@ -383,6 +383,19 @@ export default function Home() {
   // Patient story carousel
   const [currentStoryIndex, setCurrentStoryIndex] = useState(0)
 
+  // New feature states
+  const [showCompareModal, setShowCompareModal] = useState(false)
+  const [compareNGOs, setCompareNGOs] = useState<string[]>([])
+  const [showShareModal, setShowShareModal] = useState(false)
+  const [shareNGO, setShareNGO] = useState<NGO | null>(null)
+  const [showNewsletterModal, setShowNewsletterModal] = useState(false)
+  const [newsletterEmail, setNewsletterEmail] = useState('')
+  const [newsletterSubmitted, setNewsletterSubmitted] = useState(false)
+  const [showImpactMap, setShowImpactMap] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [showSearchResults, setShowSearchResults] = useState(false)
+  const [linkCopied, setLinkCopied] = useState(false)
+
   const handleSendMessage = async () => {
     if (!userInput.trim() || isLoading) return
 
@@ -501,8 +514,60 @@ export default function Home() {
     return num.toString()
   }
 
+  // New feature functions
+  const toggleCompareNGO = (ngoId: string) => {
+    setCompareNGOs(prev => {
+      if (prev.includes(ngoId)) {
+        return prev.filter(id => id !== ngoId)
+      } else if (prev.length < 3) {
+        return [...prev, ngoId]
+      }
+      return prev
+    })
+  }
+
+  const handleShare = (ngo: NGO) => {
+    setShareNGO(ngo)
+    setShowShareModal(true)
+  }
+
+  const copyShareLink = () => {
+    const link = `https://careconnect.in/ngo/${shareNGO?.id}`
+    navigator.clipboard.writeText(link)
+    setLinkCopied(true)
+    setTimeout(() => setLinkCopied(false), 2000)
+  }
+
+  const handleNewsletterSubmit = () => {
+    setNewsletterSubmitted(true)
+    setTimeout(() => {
+      setShowNewsletterModal(false)
+      setNewsletterSubmitted(false)
+      setNewsletterEmail('')
+    }, 2000)
+  }
+
+  const getSearchResults = () => {
+    if (!searchQuery.trim()) return []
+
+    const query = searchQuery.toLowerCase()
+    return MOCK_NGOS.filter(ngo =>
+      ngo.name.toLowerCase().includes(query) ||
+      ngo.mission.toLowerCase().includes(query) ||
+      ngo.cause_areas.some(cause => cause.toLowerCase().includes(query)) ||
+      ngo.location.city.toLowerCase().includes(query) ||
+      ngo.location.state.toLowerCase().includes(query)
+    )
+  }
+
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      setShowSearchResults(true)
+    }
+  }
+
   // NGO Card Component
-  const NGOCard = ({ ngo, onClick }: { ngo: NGO, onClick: () => void }) => (
+  const NGOCard = ({ ngo, onClick, showCompare = false }: { ngo: NGO, onClick: () => void, showCompare?: boolean }) => (
     <Card className="w-full hover:shadow-lg transition-shadow cursor-pointer group">
       <div onClick={onClick}>
         <div className="relative h-40 overflow-hidden rounded-t-lg">
@@ -511,13 +576,28 @@ export default function Home() {
             alt={ngo.name}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
-          <div className="absolute top-2 right-2 bg-white rounded-full p-1">
+          <div className="absolute top-2 right-2 flex gap-2">
+            {showCompare && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  toggleCompareNGO(ngo.id)
+                }}
+                className="bg-white rounded-full p-1 hover:scale-110 transition-transform"
+              >
+                {compareNGOs.includes(ngo.id) ? (
+                  <CheckSquare className="w-5 h-5 text-[#4A90D9]" />
+                ) : (
+                  <Square className="w-5 h-5 text-gray-400" />
+                )}
+              </button>
+            )}
             <button
               onClick={(e) => {
                 e.stopPropagation()
                 toggleSaveNGO(ngo.id)
               }}
-              className="hover:scale-110 transition-transform"
+              className="bg-white rounded-full p-1 hover:scale-110 transition-transform"
             >
               <Heart
                 className={`w-5 h-5 ${savedNGOs.includes(ngo.id) ? 'fill-red-500 text-red-500' : 'text-gray-400'}`}
@@ -572,6 +652,28 @@ export default function Home() {
   // Home Screen
   const HomeScreen = () => (
     <div className="pb-20">
+      {/* Search Bar */}
+      <div className="bg-white border-b px-6 py-4">
+        <div className="max-w-4xl mx-auto flex gap-2">
+          <div className="flex-1 relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Input
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+              placeholder="Search NGOs by name, cause, or location..."
+              className="pl-10"
+            />
+          </div>
+          <Button
+            onClick={handleSearch}
+            className="bg-[#4A90D9] hover:bg-[#3A7AB9]"
+          >
+            Search
+          </Button>
+        </div>
+      </div>
+
       {/* Hero Section */}
       <div className="bg-gradient-to-br from-[#4A90D9] to-[#357ABD] text-white px-6 py-12">
         <div className="max-w-4xl mx-auto text-center">
@@ -581,12 +683,22 @@ export default function Home() {
           <p className="text-lg mb-6 text-blue-50">
             Connect with verified organizations making a real difference in healthcare across India
           </p>
-          <Button
-            onClick={startDiscoveryChat}
-            className="bg-[#E07A5F] hover:bg-[#D06A4F] text-white h-12 px-8 text-lg font-semibold"
-          >
-            Find NGOs for Me
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Button
+              onClick={startDiscoveryChat}
+              className="bg-[#E07A5F] hover:bg-[#D06A4F] text-white h-12 px-8 text-lg font-semibold"
+            >
+              Find NGOs for Me
+            </Button>
+            <Button
+              onClick={() => setShowImpactMap(true)}
+              variant="outline"
+              className="bg-white/10 hover:bg-white/20 text-white border-white/30 h-12 px-8 text-lg font-semibold"
+            >
+              <Globe className="w-5 h-5 mr-2" />
+              View Impact Map
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -660,6 +772,25 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* Newsletter Signup */}
+      <div className="bg-gradient-to-r from-[#4A90D9] to-[#357ABD] py-12 px-6">
+        <div className="max-w-2xl mx-auto text-center">
+          <Mail className="w-12 h-12 text-white mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-white mb-3">
+            Stay Updated with Monthly Impact Stories
+          </h2>
+          <p className="text-blue-50 mb-6">
+            Get inspiring patient stories, NGO updates, and impact reports delivered to your inbox
+          </p>
+          <Button
+            onClick={() => setShowNewsletterModal(true)}
+            className="bg-white text-[#4A90D9] hover:bg-blue-50 h-12 px-8 font-semibold"
+          >
+            Subscribe to Newsletter
+          </Button>
+        </div>
+      </div>
     </div>
   )
 
@@ -671,7 +802,18 @@ export default function Home() {
       <div className="pb-20">
         {/* Header */}
         <div className="bg-white border-b px-6 py-4">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Explore NGOs</h1>
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="text-2xl font-bold text-gray-900">Explore NGOs</h1>
+            {compareNGOs.length > 0 && (
+              <Button
+                onClick={() => setShowCompareModal(true)}
+                className="bg-[#4A90D9] hover:bg-[#3A7AB9]"
+                disabled={compareNGOs.length < 2}
+              >
+                Compare ({compareNGOs.length})
+              </Button>
+            )}
+          </div>
 
           {/* Filters */}
           <div className="flex flex-wrap gap-3">
@@ -721,6 +863,7 @@ export default function Home() {
                 key={ngo.id}
                 ngo={ngo}
                 onClick={() => setSelectedNGO(ngo)}
+                showCompare={true}
               />
             ))}
           </div>
@@ -1112,6 +1255,7 @@ export default function Home() {
               variant="outline"
               size="icon"
               className="h-12 w-12 border-gray-300"
+              onClick={() => handleShare(ngo)}
             >
               <Share2 className="w-5 h-5" />
             </Button>
@@ -1383,6 +1527,364 @@ export default function Home() {
     </div>
   )
 
+  // Search Results Modal
+  const SearchResultsModal = () => {
+    const results = getSearchResults()
+
+    return (
+      <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] flex flex-col">
+          <div className="flex items-center justify-between p-4 border-b">
+            <h2 className="text-xl font-bold text-gray-900">
+              Search Results ({results.length})
+            </h2>
+            <button
+              onClick={() => {
+                setShowSearchResults(false)
+                setSearchQuery('')
+              }}
+              className="hover:bg-gray-100 p-2 rounded-full"
+            >
+              <X className="w-5 h-5 text-gray-600" />
+            </button>
+          </div>
+          <div className="flex-1 overflow-y-auto p-6">
+            {results.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {results.map(ngo => (
+                  <NGOCard
+                    key={ngo.id}
+                    ngo={ngo}
+                    onClick={() => {
+                      setSelectedNGO(ngo)
+                      setShowSearchResults(false)
+                      setSearchQuery('')
+                    }}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <Search className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">No results found</h3>
+                <p className="text-gray-600">Try different keywords or browse all NGOs</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Compare NGOs Modal
+  const CompareModal = () => {
+    const ngosToCompare = MOCK_NGOS.filter(ngo => compareNGOs.includes(ngo.id))
+
+    return (
+      <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-lg w-full max-w-6xl max-h-[90vh] flex flex-col">
+          <div className="flex items-center justify-between p-4 border-b">
+            <h2 className="text-xl font-bold text-gray-900">Compare NGOs</h2>
+            <button
+              onClick={() => setShowCompareModal(false)}
+              className="hover:bg-gray-100 p-2 rounded-full"
+            >
+              <X className="w-5 h-5 text-gray-600" />
+            </button>
+          </div>
+          <div className="flex-1 overflow-y-auto p-6">
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="border-b">
+                    <th className="text-left p-4 bg-gray-50 font-semibold">Criteria</th>
+                    {ngosToCompare.map(ngo => (
+                      <th key={ngo.id} className="p-4 bg-gray-50">
+                        <div className="flex flex-col items-center gap-2">
+                          <img src={ngo.logo} alt={ngo.name} className="w-12 h-12 rounded-lg object-cover" />
+                          <span className="text-sm font-semibold text-center">{ngo.name}</span>
+                        </div>
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b">
+                    <td className="p-4 font-medium">Cause Areas</td>
+                    {ngosToCompare.map(ngo => (
+                      <td key={ngo.id} className="p-4 text-center">
+                        <div className="flex flex-wrap gap-1 justify-center">
+                          {ngo.cause_areas.map((cause, idx) => (
+                            <span key={idx} className="text-xs bg-blue-50 text-[#4A90D9] px-2 py-1 rounded-full">
+                              {cause}
+                            </span>
+                          ))}
+                        </div>
+                      </td>
+                    ))}
+                  </tr>
+                  <tr className="border-b bg-gray-50">
+                    <td className="p-4 font-medium">Patients Helped</td>
+                    {ngosToCompare.map(ngo => (
+                      <td key={ngo.id} className="p-4 text-center font-semibold text-[#4A90D9]">
+                        {formatNumber(ngo.impact_stats.patients_helped)}
+                      </td>
+                    ))}
+                  </tr>
+                  <tr className="border-b">
+                    <td className="p-4 font-medium">Areas Served</td>
+                    {ngosToCompare.map(ngo => (
+                      <td key={ngo.id} className="p-4 text-center">
+                        {ngo.impact_stats.areas_served}
+                      </td>
+                    ))}
+                  </tr>
+                  <tr className="border-b bg-gray-50">
+                    <td className="p-4 font-medium">Years Active</td>
+                    {ngosToCompare.map(ngo => (
+                      <td key={ngo.id} className="p-4 text-center">
+                        {ngo.impact_stats.years_active}
+                      </td>
+                    ))}
+                  </tr>
+                  <tr className="border-b">
+                    <td className="p-4 font-medium">Funding Goal</td>
+                    {ngosToCompare.map(ngo => (
+                      <td key={ngo.id} className="p-4 text-center">
+                        ₹{formatNumber(ngo.funding.goal)}
+                      </td>
+                    ))}
+                  </tr>
+                  <tr className="border-b bg-gray-50">
+                    <td className="p-4 font-medium">Current Funding</td>
+                    {ngosToCompare.map(ngo => (
+                      <td key={ngo.id} className="p-4 text-center">
+                        ₹{formatNumber(ngo.funding.current)}
+                      </td>
+                    ))}
+                  </tr>
+                  <tr className="border-b">
+                    <td className="p-4 font-medium">Location</td>
+                    {ngosToCompare.map(ngo => (
+                      <td key={ngo.id} className="p-4 text-center text-sm">
+                        {ngo.location.city}, {ngo.location.state}
+                      </td>
+                    ))}
+                  </tr>
+                  <tr>
+                    <td className="p-4 font-medium">Actions</td>
+                    {ngosToCompare.map(ngo => (
+                      <td key={ngo.id} className="p-4 text-center">
+                        <Button
+                          onClick={() => {
+                            setSelectedNGO(ngo)
+                            setShowCompareModal(false)
+                          }}
+                          className="bg-[#4A90D9] hover:bg-[#3A7AB9] text-sm"
+                        >
+                          View Profile
+                        </Button>
+                      </td>
+                    ))}
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Share Modal
+  const ShareModal = () => (
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-lg w-full max-w-md">
+        <div className="flex items-center justify-between p-4 border-b">
+          <h2 className="text-xl font-bold text-gray-900">Share NGO</h2>
+          <button
+            onClick={() => {
+              setShowShareModal(false)
+              setLinkCopied(false)
+            }}
+            className="hover:bg-gray-100 p-2 rounded-full"
+          >
+            <X className="w-5 h-5 text-gray-600" />
+          </button>
+        </div>
+        <div className="p-6 space-y-4">
+          <div className="flex items-center gap-3 pb-4 border-b">
+            <img src={shareNGO?.logo} alt={shareNGO?.name} className="w-12 h-12 rounded-lg object-cover" />
+            <div>
+              <h3 className="font-semibold text-gray-900">{shareNGO?.name}</h3>
+              <p className="text-sm text-gray-600">{shareNGO?.cause_areas[0]}</p>
+            </div>
+          </div>
+
+          <div>
+            <p className="text-sm font-medium text-gray-700 mb-3">Share on social media</p>
+            <div className="grid grid-cols-3 gap-3">
+              <button className="flex flex-col items-center gap-2 p-4 border rounded-lg hover:bg-gray-50 transition-colors">
+                <Facebook className="w-6 h-6 text-blue-600" />
+                <span className="text-xs text-gray-700">Facebook</span>
+              </button>
+              <button className="flex flex-col items-center gap-2 p-4 border rounded-lg hover:bg-gray-50 transition-colors">
+                <Twitter className="w-6 h-6 text-sky-500" />
+                <span className="text-xs text-gray-700">Twitter</span>
+              </button>
+              <button className="flex flex-col items-center gap-2 p-4 border rounded-lg hover:bg-gray-50 transition-colors">
+                <Linkedin className="w-6 h-6 text-blue-700" />
+                <span className="text-xs text-gray-700">LinkedIn</span>
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <p className="text-sm font-medium text-gray-700 mb-2">Or copy link</p>
+            <div className="flex gap-2">
+              <Input
+                value={`https://careconnect.in/ngo/${shareNGO?.id}`}
+                readOnly
+                className="flex-1"
+              />
+              <Button
+                onClick={copyShareLink}
+                className="bg-[#4A90D9] hover:bg-[#3A7AB9]"
+              >
+                {linkCopied ? (
+                  <>
+                    <CheckCircle className="w-4 h-4 mr-2" />
+                    Copied
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-4 h-4 mr-2" />
+                    Copy
+                  </>
+                )}
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+
+  // Newsletter Modal
+  const NewsletterModal = () => (
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-lg w-full max-w-md">
+        <div className="flex items-center justify-between p-4 border-b">
+          <h2 className="text-xl font-bold text-gray-900">Subscribe to Newsletter</h2>
+          <button
+            onClick={() => setShowNewsletterModal(false)}
+            className="hover:bg-gray-100 p-2 rounded-full"
+          >
+            <X className="w-5 h-5 text-gray-600" />
+          </button>
+        </div>
+        <div className="p-6">
+          {!newsletterSubmitted ? (
+            <div className="space-y-4">
+              <div className="text-center mb-4">
+                <Mail className="w-12 h-12 text-[#4A90D9] mx-auto mb-3" />
+                <p className="text-gray-600">
+                  Get monthly updates with inspiring patient stories, NGO impact reports, and ways to make a difference
+                </p>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Email Address
+                </label>
+                <Input
+                  type="email"
+                  value={newsletterEmail}
+                  onChange={(e) => setNewsletterEmail(e.target.value)}
+                  placeholder="your.email@example.com"
+                />
+              </div>
+              <Button
+                onClick={handleNewsletterSubmit}
+                disabled={!newsletterEmail.includes('@')}
+                className="w-full bg-[#4A90D9] hover:bg-[#3A7AB9] h-12 font-semibold"
+              >
+                Subscribe Now
+              </Button>
+              <p className="text-xs text-gray-500 text-center">
+                Unsubscribe anytime. We respect your privacy.
+              </p>
+            </div>
+          ) : (
+            <div className="text-center py-8">
+              <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Welcome!</h3>
+              <p className="text-gray-600">
+                You've successfully subscribed to our monthly newsletter. Check your inbox for a confirmation email.
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+
+  // Impact Map Modal
+  const ImpactMapModal = () => (
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-lg w-full max-w-6xl max-h-[90vh] flex flex-col">
+        <div className="flex items-center justify-between p-4 border-b">
+          <h2 className="text-xl font-bold text-gray-900">NGO Impact Across India</h2>
+          <button
+            onClick={() => setShowImpactMap(false)}
+            className="hover:bg-gray-100 p-2 rounded-full"
+          >
+            <X className="w-5 h-5 text-gray-600" />
+          </button>
+        </div>
+        <div className="flex-1 overflow-y-auto p-6">
+          <div className="bg-gradient-to-br from-blue-50 to-green-50 rounded-lg p-8 mb-6">
+            <div className="text-center mb-6">
+              <Globe className="w-16 h-16 text-[#4A90D9] mx-auto mb-3" />
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">Healthcare Impact Map</h3>
+              <p className="text-gray-600">Discover NGOs making a difference across India</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {MOCK_NGOS.map(ngo => (
+                <Card key={ngo.id} className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => {
+                  setSelectedNGO(ngo)
+                  setShowImpactMap(false)
+                }}>
+                  <CardContent className="p-4">
+                    <div className="flex items-start gap-3 mb-3">
+                      <img src={ngo.logo} alt={ngo.name} className="w-10 h-10 rounded-lg object-cover" />
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-gray-900 text-sm mb-1">{ngo.name}</h4>
+                        <div className="flex items-center gap-1 text-xs text-gray-600">
+                          <MapPin className="w-3 h-3" />
+                          <span>{ngo.location.state}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between text-xs">
+                      <div className="flex items-center gap-1 text-gray-600">
+                        <Users className="w-3 h-3" />
+                        <span>{formatNumber(ngo.impact_stats.patients_helped)}</span>
+                      </div>
+                      <span className="text-[#4A90D9] bg-blue-50 px-2 py-0.5 rounded-full">
+                        {ngo.cause_areas[0]}
+                      </span>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Main Content */}
@@ -1403,6 +1905,11 @@ export default function Home() {
       {/* Modals */}
       {showDiscoveryChat && <DiscoveryChatModal />}
       {showVolunteerModal && <VolunteerModal />}
+      {showSearchResults && <SearchResultsModal />}
+      {showCompareModal && <CompareModal />}
+      {showShareModal && <ShareModal />}
+      {showNewsletterModal && <NewsletterModal />}
+      {showImpactMap && <ImpactMapModal />}
     </div>
   )
 }
