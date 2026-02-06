@@ -586,7 +586,7 @@ export default function Home() {
                 className="bg-white rounded-full p-1 hover:scale-110 transition-transform"
               >
                 {compareNGOs.includes(ngo.id) ? (
-                  <CheckSquare className="w-5 h-5 text-[#4A90D9]" />
+                  <CheckSquare className="w-5 h-5 text-red-600" />
                 ) : (
                   <Square className="w-5 h-5 text-gray-400" />
                 )}
@@ -616,14 +616,14 @@ export default function Home() {
               <div className="flex items-center gap-2 mb-1">
                 <h3 className="font-semibold text-gray-900">{ngo.name}</h3>
                 {ngo.verified && (
-                  <CheckCircle className="w-4 h-4 text-[#4A90D9]" />
+                  <CheckCircle className="w-4 h-4 text-red-600" />
                 )}
               </div>
               <div className="flex flex-wrap gap-1">
                 {ngo.cause_areas.slice(0, 2).map((cause, idx) => (
                   <span
                     key={idx}
-                    className="text-xs bg-blue-50 text-[#4A90D9] px-2 py-1 rounded-full"
+                    className="text-xs bg-red-50 text-red-600 px-2 py-1 rounded-full"
                   >
                     {cause}
                   </span>
@@ -667,7 +667,7 @@ export default function Home() {
           </div>
           <Button
             onClick={handleSearch}
-            className="bg-[#4A90D9] hover:bg-[#3A7AB9]"
+            className="bg-red-600 hover:bg-red-700 text-white"
           >
             Search
           </Button>
@@ -675,18 +675,18 @@ export default function Home() {
       </div>
 
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-[#4A90D9] to-[#357ABD] text-white px-6 py-12">
+      <div className="bg-gradient-to-br from-red-600 to-red-700 text-white px-6 py-12">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-3xl md:text-4xl font-bold mb-4">
             Discover Healthcare NGOs That Match Your Heart
           </h1>
-          <p className="text-lg mb-6 text-blue-50">
+          <p className="text-lg mb-6 text-red-50">
             Connect with verified organizations making a real difference in healthcare across India
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Button
               onClick={startDiscoveryChat}
-              className="bg-[#E07A5F] hover:bg-[#D06A4F] text-white h-12 px-8 text-lg font-semibold"
+              className="bg-white text-red-600 hover:bg-gray-100 h-12 px-8 text-lg font-semibold"
             >
               Find NGOs for Me
             </Button>
@@ -719,7 +719,7 @@ export default function Home() {
           <Button
             variant="ghost"
             onClick={() => setActiveScreen('explore')}
-            className="text-[#4A90D9]"
+            className="text-red-600"
           >
             View All
           </Button>
@@ -744,7 +744,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Card>
               <CardContent className="p-6 text-center">
-                <Users className="w-10 h-10 text-[#4A90D9] mx-auto mb-3" />
+                <Users className="w-10 h-10 text-red-600 mx-auto mb-3" />
                 <div className="text-3xl font-bold text-gray-900 mb-1">
                   650K+
                 </div>
@@ -753,7 +753,7 @@ export default function Home() {
             </Card>
             <Card>
               <CardContent className="p-6 text-center">
-                <MapPin className="w-10 h-10 text-[#4A90D9] mx-auto mb-3" />
+                <MapPin className="w-10 h-10 text-red-600 mx-auto mb-3" />
                 <div className="text-3xl font-bold text-gray-900 mb-1">
                   92
                 </div>
@@ -762,7 +762,7 @@ export default function Home() {
             </Card>
             <Card>
               <CardContent className="p-6 text-center">
-                <Award className="w-10 h-10 text-[#4A90D9] mx-auto mb-3" />
+                <Award className="w-10 h-10 text-red-600 mx-auto mb-3" />
                 <div className="text-3xl font-bold text-gray-900 mb-1">
                   6
                 </div>
@@ -774,18 +774,18 @@ export default function Home() {
       </div>
 
       {/* Newsletter Signup */}
-      <div className="bg-gradient-to-r from-[#4A90D9] to-[#357ABD] py-12 px-6">
+      <div className="bg-gradient-to-r from-red-600 to-red-700 py-12 px-6">
         <div className="max-w-2xl mx-auto text-center">
           <Mail className="w-12 h-12 text-white mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-white mb-3">
             Stay Updated with Monthly Impact Stories
           </h2>
-          <p className="text-blue-50 mb-6">
+          <p className="text-red-50 mb-6">
             Get inspiring patient stories, NGO updates, and impact reports delivered to your inbox
           </p>
           <Button
             onClick={() => setShowNewsletterModal(true)}
-            className="bg-white text-[#4A90D9] hover:bg-blue-50 h-12 px-8 font-semibold"
+            className="bg-white text-red-600 hover:bg-gray-100 h-12 px-8 font-semibold"
           >
             Subscribe to Newsletter
           </Button>
@@ -807,7 +807,7 @@ export default function Home() {
             {compareNGOs.length > 0 && (
               <Button
                 onClick={() => setShowCompareModal(true)}
-                className="bg-[#4A90D9] hover:bg-[#3A7AB9]"
+                className="bg-red-600 hover:bg-red-700"
                 disabled={compareNGOs.length < 2}
               >
                 Compare ({compareNGOs.length})
@@ -820,7 +820,7 @@ export default function Home() {
             <select
               value={filterCause}
               onChange={(e) => setFilterCause(e.target.value)}
-              className="px-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#4A90D9]"
+              className="px-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-600"
             >
               <option value="All">All Causes</option>
               <option value="Child Health">Child Health</option>
@@ -834,7 +834,7 @@ export default function Home() {
             <select
               value={filterLocation}
               onChange={(e) => setFilterLocation(e.target.value)}
-              className="px-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#4A90D9]"
+              className="px-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-600"
             >
               <option value="All">All Locations</option>
               <option value="Maharashtra">Maharashtra</option>
@@ -847,7 +847,7 @@ export default function Home() {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="px-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#4A90D9]"
+              className="px-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-600"
             >
               <option value="impact">Sort by Impact</option>
               <option value="years">Sort by Experience</option>
@@ -908,7 +908,7 @@ export default function Home() {
               <p className="text-gray-600 mb-4">Start exploring and save NGOs you're interested in</p>
               <Button
                 onClick={() => setActiveScreen('explore')}
-                className="bg-[#4A90D9] hover:bg-[#3A7AB9]"
+                className="bg-red-600 hover:bg-red-700"
               >
                 Explore NGOs
               </Button>
@@ -930,7 +930,7 @@ export default function Home() {
         <Card className="mb-6">
           <CardContent className="p-6">
             <div className="flex items-center gap-4 mb-6">
-              <div className="w-20 h-20 bg-[#4A90D9] rounded-full flex items-center justify-center text-white text-2xl font-bold">
+              <div className="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
                 U
               </div>
               <div>
@@ -945,7 +945,7 @@ export default function Home() {
                   <Heart className="w-5 h-5 text-gray-600" />
                   <span className="text-gray-900">Saved NGOs</span>
                 </div>
-                <span className="font-semibold text-[#4A90D9]">{savedNGOs.length}</span>
+                <span className="font-semibold text-red-600">{savedNGOs.length}</span>
               </div>
 
               <div className="flex items-center justify-between py-3 border-b">
@@ -953,7 +953,7 @@ export default function Home() {
                   <Users className="w-5 h-5 text-gray-600" />
                   <span className="text-gray-900">Volunteer Applications</span>
                 </div>
-                <span className="font-semibold text-[#4A90D9]">0</span>
+                <span className="font-semibold text-red-600">0</span>
               </div>
 
               <div className="flex items-center justify-between py-3 border-b">
@@ -961,7 +961,7 @@ export default function Home() {
                   <Activity className="w-5 h-5 text-gray-600" />
                   <span className="text-gray-900">NGOs Discovered</span>
                 </div>
-                <span className="font-semibold text-[#4A90D9]">{MOCK_NGOS.length}</span>
+                <span className="font-semibold text-red-600">{MOCK_NGOS.length}</span>
               </div>
             </div>
           </CardContent>
@@ -1004,7 +1004,7 @@ export default function Home() {
         <div className="bg-white border-b px-6 py-3">
           <button
             onClick={() => setSelectedNGO(null)}
-            className="flex items-center gap-2 text-[#4A90D9] hover:text-[#3A7AB9]"
+            className="flex items-center gap-2 text-red-600 hover:text-red-700"
           >
             <ChevronLeft className="w-5 h-5" />
             <span>Back</span>
@@ -1036,7 +1036,7 @@ export default function Home() {
                   {ngo.cause_areas.map((cause, idx) => (
                     <span
                       key={idx}
-                      className="text-xs bg-white/90 text-[#4A90D9] px-3 py-1 rounded-full font-medium"
+                      className="text-xs bg-white/90 text-red-600 px-3 py-1 rounded-full font-medium"
                     >
                       {cause}
                     </span>
@@ -1064,7 +1064,7 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <Card>
                 <CardContent className="p-6 text-center">
-                  <Users className="w-8 h-8 text-[#4A90D9] mx-auto mb-2" />
+                  <Users className="w-8 h-8 text-red-600 mx-auto mb-2" />
                   <div className="text-2xl font-bold text-gray-900">
                     {formatNumber(ngo.impact_stats.patients_helped)}
                   </div>
@@ -1073,7 +1073,7 @@ export default function Home() {
               </Card>
               <Card>
                 <CardContent className="p-6 text-center">
-                  <MapPin className="w-8 h-8 text-[#4A90D9] mx-auto mb-2" />
+                  <MapPin className="w-8 h-8 text-red-600 mx-auto mb-2" />
                   <div className="text-2xl font-bold text-gray-900">
                     {ngo.impact_stats.areas_served}
                   </div>
@@ -1082,7 +1082,7 @@ export default function Home() {
               </Card>
               <Card>
                 <CardContent className="p-6 text-center">
-                  <Calendar className="w-8 h-8 text-[#4A90D9] mx-auto mb-2" />
+                  <Calendar className="w-8 h-8 text-red-600 mx-auto mb-2" />
                   <div className="text-2xl font-bold text-gray-900">
                     {ngo.impact_stats.years_active}
                   </div>
@@ -1101,13 +1101,13 @@ export default function Home() {
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-medium text-gray-700">Funding Progress</span>
-                  <span className="text-sm font-bold text-[#4A90D9]">
+                  <span className="text-sm font-bold text-red-600">
                     {fundingPercentage.toFixed(0)}%
                   </span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-3">
                   <div
-                    className="bg-[#4A90D9] h-3 rounded-full transition-all"
+                    className="bg-red-600 h-3 rounded-full transition-all"
                     style={{ width: `${fundingPercentage}%` }}
                   />
                 </div>
@@ -1143,7 +1143,7 @@ export default function Home() {
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
                       <div
-                        className="bg-blue-500 h-2 rounded-full"
+                        className="bg-red-500 h-2 rounded-full"
                         style={{ width: `${ngo.funding.allocation.staff}%` }}
                       />
                     </div>
@@ -1216,7 +1216,7 @@ export default function Home() {
             <CardContent>
               <div className="space-y-4">
                 {ngo.field_updates.map(update => (
-                  <div key={update.id} className="border-l-2 border-[#4A90D9] pl-4">
+                  <div key={update.id} className="border-l-2 border-red-600 pl-4">
                     <div className="flex items-center gap-2 mb-1">
                       <Calendar className="w-4 h-4 text-gray-500" />
                       <span className="text-xs text-gray-500">
@@ -1240,13 +1240,13 @@ export default function Home() {
         <div className="fixed bottom-16 left-0 right-0 bg-white border-t shadow-lg px-6 py-4">
           <div className="max-w-4xl mx-auto flex gap-3">
             <Button
-              className="flex-1 bg-[#E07A5F] hover:bg-[#D06A4F] text-white h-12 font-semibold"
+              className="flex-1 bg-red-600 hover:bg-red-700 text-white h-12 font-semibold"
             >
               Donate Now
             </Button>
             <Button
               variant="outline"
-              className="flex-1 h-12 font-semibold border-[#4A90D9] text-[#4A90D9] hover:bg-blue-50"
+              className="flex-1 h-12 font-semibold border-red-600 text-red-600 hover:bg-red-50"
               onClick={() => setShowVolunteerModal(true)}
             >
               Volunteer
@@ -1288,7 +1288,7 @@ export default function Home() {
               <button
                 key={cause}
                 onClick={() => handleQuickReply(cause)}
-                className="px-3 py-1 bg-white border border-gray-300 rounded-full text-sm hover:border-[#4A90D9] hover:text-[#4A90D9] transition-colors"
+                className="px-3 py-1 bg-white border border-gray-300 rounded-full text-sm hover:border-red-600 hover:text-red-600 transition-colors"
               >
                 {cause}
               </button>
@@ -1300,7 +1300,7 @@ export default function Home() {
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {chatMessages.map((msg, idx) => (
             <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div className={`max-w-[80%] ${msg.role === 'user' ? 'bg-[#4A90D9] text-white' : 'bg-gray-100 text-gray-900'} rounded-lg p-3`}>
+              <div className={`max-w-[80%] ${msg.role === 'user' ? 'bg-red-600 text-white' : 'bg-gray-100 text-gray-900'} rounded-lg p-3`}>
                 <p className="text-sm">{msg.content}</p>
 
                 {/* Display recommended NGOs */}
@@ -1315,7 +1315,7 @@ export default function Home() {
                           <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
                           <div>
                             <h4 className="font-semibold text-sm">{ngo.ngo_name}</h4>
-                            <span className="text-xs text-[#4A90D9] bg-blue-50 px-2 py-0.5 rounded-full inline-block mt-1">
+                            <span className="text-xs text-red-600 bg-red-50 px-2 py-0.5 rounded-full inline-block mt-1">
                               {ngo.cause_area}
                             </span>
                           </div>
@@ -1332,7 +1332,7 @@ export default function Home() {
           {isLoading && (
             <div className="flex justify-start">
               <div className="bg-gray-100 rounded-lg p-3">
-                <Loader2 className="w-5 h-5 animate-spin text-[#4A90D9]" />
+                <Loader2 className="w-5 h-5 animate-spin text-red-600" />
               </div>
             </div>
           )}
@@ -1353,7 +1353,7 @@ export default function Home() {
               id="send-btn"
               onClick={handleSendMessage}
               disabled={!userInput.trim() || isLoading}
-              className="bg-[#4A90D9] hover:bg-[#3A7AB9]"
+              className="bg-red-600 hover:bg-red-700"
             >
               {isLoading ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
@@ -1439,7 +1439,7 @@ export default function Home() {
                 <select
                   value={volunteerForm.availability}
                   onChange={(e) => setVolunteerForm(prev => ({ ...prev, availability: e.target.value }))}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4A90D9]"
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600"
                 >
                   <option value="">Select availability</option>
                   <option value="weekends">Weekends</option>
@@ -1459,8 +1459,8 @@ export default function Home() {
                       onClick={() => toggleSkill(skill)}
                       className={`px-3 py-1 rounded-full text-sm border transition-colors ${
                         volunteerForm.skills.includes(skill)
-                          ? 'bg-[#4A90D9] text-white border-[#4A90D9]'
-                          : 'bg-white text-gray-700 border-gray-300 hover:border-[#4A90D9]'
+                          ? 'bg-red-600 text-white border-red-600'
+                          : 'bg-white text-gray-700 border-gray-300 hover:border-red-600'
                       }`}
                     >
                       {skill}
@@ -1472,7 +1472,7 @@ export default function Home() {
               <Button
                 onClick={handleVolunteerSubmit}
                 disabled={!volunteerForm.name || !volunteerForm.email || !volunteerForm.phone}
-                className="w-full bg-[#E07A5F] hover:bg-[#D06A4F] text-white h-12 font-semibold"
+                className="w-full bg-red-600 hover:bg-red-700 text-white h-12 font-semibold"
               >
                 Sign Up to Volunteer
               </Button>
@@ -1497,28 +1497,28 @@ export default function Home() {
       <div className="max-w-4xl mx-auto flex items-center justify-around">
         <button
           onClick={() => setActiveScreen('home')}
-          className={`flex flex-col items-center gap-1 ${activeScreen === 'home' ? 'text-[#4A90D9]' : 'text-gray-500'}`}
+          className={`flex flex-col items-center gap-1 ${activeScreen === 'home' ? 'text-red-600' : 'text-gray-500'}`}
         >
           <HomeIcon className="w-6 h-6" />
           <span className="text-xs font-medium">Home</span>
         </button>
         <button
           onClick={() => setActiveScreen('explore')}
-          className={`flex flex-col items-center gap-1 ${activeScreen === 'explore' ? 'text-[#4A90D9]' : 'text-gray-500'}`}
+          className={`flex flex-col items-center gap-1 ${activeScreen === 'explore' ? 'text-red-600' : 'text-gray-500'}`}
         >
           <Search className="w-6 h-6" />
           <span className="text-xs font-medium">Explore</span>
         </button>
         <button
           onClick={() => setActiveScreen('saved')}
-          className={`flex flex-col items-center gap-1 ${activeScreen === 'saved' ? 'text-[#4A90D9]' : 'text-gray-500'}`}
+          className={`flex flex-col items-center gap-1 ${activeScreen === 'saved' ? 'text-red-600' : 'text-gray-500'}`}
         >
           <Bookmark className="w-6 h-6" />
           <span className="text-xs font-medium">Saved</span>
         </button>
         <button
           onClick={() => setActiveScreen('profile')}
-          className={`flex flex-col items-center gap-1 ${activeScreen === 'profile' ? 'text-[#4A90D9]' : 'text-gray-500'}`}
+          className={`flex flex-col items-center gap-1 ${activeScreen === 'profile' ? 'text-red-600' : 'text-gray-500'}`}
         >
           <User className="w-6 h-6" />
           <span className="text-xs font-medium">Profile</span>
@@ -1615,7 +1615,7 @@ export default function Home() {
                       <td key={ngo.id} className="p-4 text-center">
                         <div className="flex flex-wrap gap-1 justify-center">
                           {ngo.cause_areas.map((cause, idx) => (
-                            <span key={idx} className="text-xs bg-blue-50 text-[#4A90D9] px-2 py-1 rounded-full">
+                            <span key={idx} className="text-xs bg-red-50 text-red-600 px-2 py-1 rounded-full">
                               {cause}
                             </span>
                           ))}
@@ -1626,7 +1626,7 @@ export default function Home() {
                   <tr className="border-b bg-gray-50">
                     <td className="p-4 font-medium">Patients Helped</td>
                     {ngosToCompare.map(ngo => (
-                      <td key={ngo.id} className="p-4 text-center font-semibold text-[#4A90D9]">
+                      <td key={ngo.id} className="p-4 text-center font-semibold text-red-600">
                         {formatNumber(ngo.impact_stats.patients_helped)}
                       </td>
                     ))}
@@ -1680,7 +1680,7 @@ export default function Home() {
                             setSelectedNGO(ngo)
                             setShowCompareModal(false)
                           }}
-                          className="bg-[#4A90D9] hover:bg-[#3A7AB9] text-sm"
+                          className="bg-red-600 hover:bg-red-700 text-sm"
                         >
                           View Profile
                         </Button>
@@ -1749,7 +1749,7 @@ export default function Home() {
               />
               <Button
                 onClick={copyShareLink}
-                className="bg-[#4A90D9] hover:bg-[#3A7AB9]"
+                className="bg-red-600 hover:bg-red-700"
               >
                 {linkCopied ? (
                   <>
@@ -1787,7 +1787,7 @@ export default function Home() {
           {!newsletterSubmitted ? (
             <div className="space-y-4">
               <div className="text-center mb-4">
-                <Mail className="w-12 h-12 text-[#4A90D9] mx-auto mb-3" />
+                <Mail className="w-12 h-12 text-red-600 mx-auto mb-3" />
                 <p className="text-gray-600">
                   Get monthly updates with inspiring patient stories, NGO impact reports, and ways to make a difference
                 </p>
@@ -1806,7 +1806,7 @@ export default function Home() {
               <Button
                 onClick={handleNewsletterSubmit}
                 disabled={!newsletterEmail.includes('@')}
-                className="w-full bg-[#4A90D9] hover:bg-[#3A7AB9] h-12 font-semibold"
+                className="w-full bg-red-600 hover:bg-red-700 h-12 font-semibold"
               >
                 Subscribe Now
               </Button>
@@ -1842,9 +1842,9 @@ export default function Home() {
           </button>
         </div>
         <div className="flex-1 overflow-y-auto p-6">
-          <div className="bg-gradient-to-br from-blue-50 to-green-50 rounded-lg p-8 mb-6">
+          <div className="bg-gradient-to-br from-red-50 to-green-50 rounded-lg p-8 mb-6">
             <div className="text-center mb-6">
-              <Globe className="w-16 h-16 text-[#4A90D9] mx-auto mb-3" />
+              <Globe className="w-16 h-16 text-red-600 mx-auto mb-3" />
               <h3 className="text-2xl font-bold text-gray-900 mb-2">Healthcare Impact Map</h3>
               <p className="text-gray-600">Discover NGOs making a difference across India</p>
             </div>
@@ -1871,7 +1871,7 @@ export default function Home() {
                         <Users className="w-3 h-3" />
                         <span>{formatNumber(ngo.impact_stats.patients_helped)}</span>
                       </div>
-                      <span className="text-[#4A90D9] bg-blue-50 px-2 py-0.5 rounded-full">
+                      <span className="text-red-600 bg-red-50 px-2 py-0.5 rounded-full">
                         {ngo.cause_areas[0]}
                       </span>
                     </div>
